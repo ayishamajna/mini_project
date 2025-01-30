@@ -1,18 +1,24 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:schoolevents/View/splashscreen.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:schoolevents/Regular.dart/splashscreen.dart';
+
+import 'package:schoolevents/firebase_options.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const MySplash (),
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MySplash(),
     );
   }
 }

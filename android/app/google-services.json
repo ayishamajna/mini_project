@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1083861624380",
+    "project_id": "schoolevents-341fc",
+    "storage_bucket": "schoolevents-341fc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1083861624380:android:2cba51b88b19bd2271c539",
+        "android_client_info": {
+          "package_name": "com.example.schoolevents"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD97_kKbjGGKbDXCc2QP87DTFZuMLDWSgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
