@@ -156,13 +156,6 @@ class OrganizerEventDetail extends StatelessWidget {
                       border: Border.all(
                     color: Colors.blue,
                   )),
-                  child: Center(
-                    child: Icon(
-                      Icons.image,
-                      size: 100,
-                      color: Colors.blue,
-                    ),
-                  ),
                 ),
               ],
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:schoolevents/View/Organizer/Event_Edit.dart';
+import 'package:schoolevents/View/Organizer/Organizer.dart';
 
 class OrganizerHomepage extends StatefulWidget {
   const OrganizerHomepage({super.key});
@@ -23,7 +23,7 @@ class _OrganizerHomepageState extends State<OrganizerHomepage> {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Container(
-              height: size.height * 0.2,
+              height: size.height * 0.3,
               decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 85, 141, 187),
                   borderRadius: BorderRadius.circular(8)),
@@ -45,23 +45,17 @@ class _OrganizerHomepageState extends State<OrganizerHomepage> {
                             fontWeight: FontWeight.w500,
                             fontFamily: 'Poppins'),
                       ),
-                      SizedBox(width: size.width * 0.16),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.delete,
-                          color: const Color.fromARGB(255, 0, 0, 0),
-                          size: 25,
-                        ),
-                      ),
                     ],
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 15),
                     child: Row(
                       children: [
                         Text(
-                          "Date:",
+                          "Date :",
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Poppins',
@@ -70,12 +64,38 @@ class _OrganizerHomepageState extends State<OrganizerHomepage> {
                           ),
                         ),
                         Text(
-                          "12/12/2021",
+                          "  12/12/2021",
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Poppins',
                             fontSize: size.width * 0.04,
-                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.06,
+                        ),
+                        Text(
+                          "Time :",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Poppins',
+                            fontSize: size.width * 0.04,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          "  1:30 pm",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Poppins',
+                            fontSize: size.width * 0.04,
                           ),
                         ),
                       ],
@@ -98,37 +118,11 @@ class _OrganizerHomepageState extends State<OrganizerHomepage> {
                           ),
                         ),
                         Text(
-                          "02",
+                          "  02",
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Poppins',
                             fontSize: size.width * 0.04,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Time:",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Poppins',
-                            fontSize: size.width * 0.04,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          "1:30 pm",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Poppins',
-                            fontSize: size.width * 0.04,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(
@@ -140,7 +134,7 @@ class _OrganizerHomepageState extends State<OrganizerHomepage> {
                             },
                             icon: Icon(
                               Icons.edit,
-                              color: Colors.black,
+                              color: Colors.white,
                             ))
                       ],
                     ),
@@ -148,7 +142,12 @@ class _OrganizerHomepageState extends State<OrganizerHomepage> {
                 ],
               ),
             ),
-          )
+          ),
+          SizedBox(
+            height: 50,
+          ),
+         
+          
         ],
       ),
     ));

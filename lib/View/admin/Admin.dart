@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:schoolevents/View/admin/Events.dart';
 import 'package:schoolevents/View/admin/Organizer.dart';
-import 'package:schoolevents/View/admin/adminhome.dart';
+import 'package:schoolevents/View/admin/admin_Home.dart';
 
 class AdminBottomNavigationBar extends StatefulWidget {
   const AdminBottomNavigationBar({super.key});
@@ -44,8 +44,8 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: indexnum == 0
-                      ? const Color(0xFFFFC107) // Highlighted yellow
-                      : const Color(0xFF1F4B76), // Default blue
+                      ? const Color(0xFFFFC107)
+                      : const Color(0xFF1F4B76),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
                   ),
@@ -120,7 +120,7 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
           ),
         ),
       ),
-      body: tabWidgets[indexnum], // Display selected tab widget
+      body: tabWidgets[indexnum],
     );
   }
 }

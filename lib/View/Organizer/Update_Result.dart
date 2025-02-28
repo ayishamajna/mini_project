@@ -14,7 +14,6 @@ class UpdateResult extends StatefulWidget {
 
 class _UpdateResultState extends State<UpdateResult> {
   final TextEditingController _eventName = TextEditingController();
-  final TextEditingController __videolink = TextEditingController();
   final TextEditingController _description = TextEditingController();
 
   @override
@@ -42,17 +41,6 @@ class _UpdateResultState extends State<UpdateResult> {
             RegisterTextformfield(
               text: "Eventname",
               controller: _eventName,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your event name';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: size.height * 0.03),
-            RegisterTextformfield(
-              text: "Video Link",
-              controller: __videolink,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your event name';
@@ -117,18 +105,13 @@ class _UpdateResultState extends State<UpdateResult> {
                 border: Border.all(),
                 borderRadius: BorderRadius.circular(8 * (size.width / 350)),
               ),
-              child: Icon(
-                Icons.image,
-                size: 50,
-              ),
             ),
             SizedBox(height: size.height * 0.05),
             CustomButton(
               text: "Submit",
-              onPressed: () {
+              onpressed: () {
                 Get.to(AppealList());
               },
-              onpressed: () {},
             )
           ],
         ),

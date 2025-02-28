@@ -158,21 +158,13 @@ class StudentResultDetails extends StatelessWidget {
                       border: Border.all(
                     color: Colors.blue,
                   )),
-                  child: Center(
-                    child: Icon(
-                      Icons.image,
-                      size: 100,
-                      color: Colors.blue,
-                    ),
-                  ),
                 ),
                 SizedBox(height: size.height * 0.03),
                 CustomButton(
                   text: "Appeal",
-                  onPressed: () {
+                  onpressed: () {
                     Get.to(() => AppealApply());
                   },
-                  onpressed: () {},
                 )
               ],
             ),

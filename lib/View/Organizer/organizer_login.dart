@@ -1,106 +1,149 @@
+import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:schoolevents/View/Organizer/Organizer.dart';
 import 'package:schoolevents/View/Organizer/Organizer_Regst.dart';
-import 'package:schoolevents/widgets/button.dart';
-import 'package:schoolevents/widgets/login_txtformfield.dart';
+import 'package:schoolevents/View/student/StdHome.dart';
+import 'package:schoolevents/View/student/stdRegster.dart';
+import 'package:schoolevents/constant/const.dart';
+import 'package:schoolevents/sevices/auth_service.dart';
 
 class OrganizerLogin extends StatefulWidget {
   const OrganizerLogin({super.key});
 
   @override
-  State<OrganizerLogin> createState() => _OrganizerLoginState();
+  State<OrganizerLogin> createState() => _StudentLoginState();
 }
 
-class _OrganizerLoginState extends State<OrganizerLogin> {
+class _StudentLoginState extends State<OrganizerLogin> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _organizerUsername = TextEditingController();
-  final TextEditingController _organizerPassword = TextEditingController();
+  bool _isLoading = false;
+  bool _obscurePassword = true;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06),
+            padding: const EdgeInsets.all(16),
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: screenHeight * 0.1),
-                  Image.asset('images/event.png'),
-                  SizedBox(height: screenHeight * 0.1),
+                  Image.asset('assets/school_logo.png'),
+                  const SizedBox(height: 20),
                   Text(
-                    "Login",
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: bluecolor,
+                    ),
                   ),
-                  SizedBox(height: screenHeight * 0.08), // 5% of screen height
-
-                  // Username field
-                  CustomTextFormField(
-                    controller: _organizerUsername,
-                    hintText: "Username",
-                    icon: Icons.person,
+                  const SizedBox(height: 32),
+                  TextFormField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.person, color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      labelText: 'Email',
+                      contentPadding: const EdgeInsets.all(16),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Username is required";
+                        return "Please enter your email";
+                      }
+                      if (!RegExp(
+                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$',
+                      ).hasMatch(value)) {
+                        return "Please enter a valid email address";
                       }
                       return null;
                     },
                   ),
-                  SizedBox(height: screenHeight * 0.03), // 3% of screen height
-
-                  // Password field
-                  CustomTextFormField(
-                    controller: _organizerPassword,
-                    hintText: "Password",
-                    icon: Icons.lock,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      } else if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: screenHeight * 0.05), // 5% of screen height
-
-                  // Login button
-                  CustomButton(
-                    text: "Login",
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        Get.to(() => OrganizerBnb());
-                      }
-                    },
-                    onpressed: () {},
-                  ),
-                  SizedBox(height: screenHeight * 0.05), // 5% of screen height
-
-                  // Create account text
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => OrganizerRegst(
-                            eventName: 'Organizer',
-                          ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: _obscurePassword,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.lock, color: Colors.grey),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
                         ),
-                      );
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      labelText: 'Password',
+                      contentPadding: const EdgeInsets.all(16),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your password";
+                      } else if (value.length < 6) {
+                        return "Password must be at least 6 characters";
+                      }
+                      return null;
                     },
-                    child: Text(
-                      "Create an Account",
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: _isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : ElevatedButton(
+                            onPressed: _handleLogin,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: bluecolor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: const Text(
+                              'Login',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () => Get.to(() => const OrganizerRegst()),
+                    child: const Text(
+                      'Create new account',
                       style: TextStyle(
-                        fontSize: screenWidth * 0.04,
                         decoration: TextDecoration.underline,
                         color: Color.fromARGB(255, 32, 69, 99),
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -111,5 +154,73 @@ class _OrganizerLoginState extends State<OrganizerLogin> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleLogin() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        final result = await AuthServices().OrganizerLogin(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
+
+        if (result?.user != null) {
+          Get.off(() => const OrganizerBnb());
+        } else {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Invalid email or password"),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        }
+      } on FirebaseAuthException catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(_getErrorMessage(e.code)),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        log('Login error: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("An error occurred. Please try again."),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
+    }
+  }
+
+  String _getErrorMessage(String code) {
+    switch (code) {
+      case 'user-not-found':
+        return 'No user found with this email.';
+      case 'wrong-password':
+        return 'Wrong password provided.';
+      case 'invalid-email':
+        return 'Please enter a valid email address.';
+      case 'user-disabled':
+        return 'This account has been disabled.';
+      default:
+        return 'An error occurred. Please try again.';
+    }
   }
 }

@@ -13,7 +13,6 @@ class AppealDetail extends StatefulWidget {
 
 class _AppealDetailState extends State<AppealDetail> {
   final TextEditingController _eventName = TextEditingController();
-  final TextEditingController __videolink = TextEditingController();
   final TextEditingController _description = TextEditingController();
 
   @override
@@ -41,17 +40,6 @@ class _AppealDetailState extends State<AppealDetail> {
             RegisterTextformfield(
               text: "Eventname",
               controller: _eventName,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your event name';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: size.height * 0.03),
-            RegisterTextformfield(
-              text: "Video Link",
-              controller: __videolink,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your event name';
@@ -97,39 +85,16 @@ class _AppealDetailState extends State<AppealDetail> {
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SizedBox(width: size.width * 0.05),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 9, 102, 12)),
-                    onPressed: () {
-                      Get.to(UpdateResult());
-                    },
-                    child: Text(
-                      "Accept",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold),
-                    )),
-                SizedBox(width: size.width * 0.05),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 173, 5, 5)),
-                    onPressed: () {},
-                    child: Text(
-                      "Reject",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold),
-                    )),
-                SizedBox(width: size.width * 0.05),
-              ],
-            )
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                child: Text(
+                  'Update',
+                  style: TextStyle(color: Colors.white),
+                ))
           ],
         ),
       ),

@@ -149,10 +149,9 @@ class StudentEventDetail extends StatelessWidget {
                 SizedBox(height: size.height * 0.25),
                 CustomButton(
                   text: "Apply",
-                  onPressed: () {
+                  onpressed: () {
                     Get.to(() => EventApply());
                   },
-                  onpressed: () {},
                 )
               ],
             ),

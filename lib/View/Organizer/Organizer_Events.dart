@@ -61,11 +61,11 @@ class _OrganizerEventpageState extends State<OrganizerEventpage> {
                               ),
                               onTap: () {
                                 if (isToggled) {
-                                  // Navigate to EventDetail page
+                                
                                   Get.to(
                                       () => ParticipantsList(eventName: item));
                                 } else {
-                                  // Navigate to ResultDetail page
+                            
                                   Get.to(() =>
                                       OrganizerEventDetail(eventName: item));
                                 }

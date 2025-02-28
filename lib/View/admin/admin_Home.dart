@@ -42,6 +42,9 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         MaterialPageRoute(
                           builder: (context) => StudentDetail(
                             studentName: item[index],
+                            studentid: null,
+                            department: null,
+                            phoneNumber: null,
                           ),
                         ),
                       );

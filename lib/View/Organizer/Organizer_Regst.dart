@@ -1,164 +1,243 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:schoolevents/View/student/EventApply.dart';
-import 'package:schoolevents/widgets/button.dart';
+import 'package:schoolevents/View/Organizer/organizer_login.dart';
+import 'package:schoolevents/View/student/StdHome.dart';
+import 'package:schoolevents/View/student/stdlogin.dart';
+import 'package:schoolevents/constant/const.dart';
+import 'package:schoolevents/sevices/auth_service.dart';
 
-class OrganizerRegst extends StatelessWidget {
-  final String eventName;
+class OrganizerRegst extends StatefulWidget {
+  const OrganizerRegst({super.key});
 
-  const OrganizerRegst({super.key, required this.eventName});
+  @override
+  State<OrganizerRegst> createState() => _MyRegisterState();
+}
+
+class _MyRegisterState extends State<OrganizerRegst> {
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _phonenum = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _idnum = TextEditingController();
+  final TextEditingController _department = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _phonenum.dispose();
+    _email.dispose();
+    _password.dispose();
+    _idnum.dispose();
+    _department.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-            child: Column(
-              children: [
-                SizedBox(height: size.height * 0.05),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: Icon(Icons.arrow_back_ios, size: size.width * 0.06),
-                    ),
-                    Spacer(),
-                    Text(
-                      "Event Detail",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: size.width * 0.05,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Spacer(),
-                  ],
-                ),
-                SizedBox(height: size.height * 0.08),
-                CircleAvatar(
-                  radius: size.width * 0.12,
-                  backgroundImage: AssetImage('images/user.png'),
-                ),
-                SizedBox(height: size.height * 0.04),
-                Text(
-                  eventName,
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: size.width * 0.045,
-                    fontWeight: FontWeight.w400,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Registration',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+      ),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Name'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _name,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                SizedBox(height: size.height * 0.08),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "Date:",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: size.width * 0.045,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Text(
-                      "12/12/2021",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: size.width * 0.045,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your name";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text('Phone Number'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _phonenum,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                SizedBox(height: size.height * 0.02),
-                Row(
-                  children: [
-                    SizedBox(width: size.width * 0.18),
-                    Text(
-                      "Stage No:",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: size.width * 0.045,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(width: size.width * 0.1),
-                    Text(
-                      "02",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: size.width * 0.045,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your phone number";
+                  } else if (value.length != 10) {
+                    return "Enter valid phone number";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text('Email'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _email,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                SizedBox(height: size.height * 0.02),
-                Row(
-                  children: [
-                    SizedBox(width: size.width * 0.18),
-                    Text(
-                      "Time:",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: size.width * 0.045,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(width: size.width * 0.2),
-                    Text(
-                      "1:30 pm",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: size.width * 0.045,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your email";
+                  }
+                  if (!RegExp(
+                          r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')
+                      .hasMatch(value)) {
+                    return "Please enter a valid email address";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text('Password'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _password,
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                SizedBox(height: size.height * 0.02),
-                Row(
-                  children: [
-                    SizedBox(width: size.width * 0.18),
-                    Text(
-                      "Location:",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: size.width * 0.045,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(width: size.width * 0.12),
-                    Text(
-                      "Ground",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: size.width * 0.045,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter password";
+                  } else if (value.length < 6) {
+                    return "Enter at least 6 characters";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text('ID Number'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _idnum,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                SizedBox(height: size.height * 0.25),
-                CustomButton(
-                  text: "Apply",
-                  onPressed: () {
-                    Get.to(() => EventApply());
-                  },
-                  onpressed: () {},
-                )
-              ],
-            ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your ID Number";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text('Department'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _department,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your Department";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 32),
+              Center(
+                child: _isLoading
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: _handleRegistration,
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(bluecolor),
+                          padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(
+                              horizontal: 32,
+                              vertical: 12,
+                            ),
+                          ),
+                        ),
+                        child: const Text(
+                          'Submit',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+              ),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _handleRegistration() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        final result = await AuthServices().OrganizerReg(
+          name: _name.text.trim(),
+          email: _email.text.trim(),
+          password: _password.text,
+          idnumber: _idnum.text.trim(),
+          department: _department.text.trim(),
+          phoneno: _phonenum.text.trim(),
+        );
+
+        if (result != null) {
+          Get.off(() => OrganizerLogin());
+        } else {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Registration failed. Please try again."),
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        log('Registration error: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString().contains('firebase')
+                  ? "Registration failed. Please check your details and try again."
+                  : e.toString()),
+            ),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
+    }
   }
 }

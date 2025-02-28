@@ -62,38 +62,11 @@ class _AddResultState extends State<AddResult> {
                       SizedBox(
                         height: size.height * 0.1,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            "Image",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: size.height * 0.32,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                          color: Colors.blue,
-                        )),
-                        child: Center(
-                          child: Icon(
-                            Icons.image,
-                            size: 100,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: size.height * 0.25,
-                      ),
                       CustomButton(
                         text: "submit",
-                        onPressed: () {
+                        onpressed: () {
                           // Get.back();
                         },
-                        onpressed: () {},
                       )
                     ])))));
   }

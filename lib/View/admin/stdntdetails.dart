@@ -5,7 +5,12 @@ import 'package:get/get_core/src/get_main.dart';
 class StudentDetail extends StatelessWidget {
   final String studentName;
 
-  const StudentDetail({super.key, required this.studentName});
+  const StudentDetail(
+      {super.key,
+      required this.studentName,
+      required studentid,
+      required department,
+      required phoneNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +119,7 @@ class StudentDetail extends StatelessWidget {
                     ),
                     SizedBox(width: size.width * 0.29),
                     Text(
-                      "8281535237",
+                      "7594083016",
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: size.width * 0.045,
@@ -128,7 +133,7 @@ class StudentDetail extends StatelessWidget {
                   children: [
                     SizedBox(width: size.width * 0.09),
                     Text(
-                      "Location:",
+                      "Event name:",
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: size.width * 0.045,
@@ -139,44 +144,12 @@ class StudentDetail extends StatelessWidget {
                     Text(
                       "Ground",
                       style: TextStyle(
-                        fontFamily: 'Poppins',
                         fontSize: size.width * 0.045,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: size.height * 0.2),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 26, 91, 28),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          "Accept",
-                          style: TextStyle(color: Colors.white),
-                        )),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 151, 7, 7),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          "Reject",
-                          style: TextStyle(color: Colors.white),
-                        )),
-                  ],
-                )
               ],
             ),
           ),

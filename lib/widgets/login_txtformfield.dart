@@ -14,6 +14,7 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.hintText,
     this.icon,
+    required InputDecoration decoration,
   });
 
   @override

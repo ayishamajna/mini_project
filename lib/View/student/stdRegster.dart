@@ -1,168 +1,241 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:schoolevents/View/student/StdHome.dart';
+import 'package:get/get.dart';
+import 'package:schoolevents/View/student/stdlogin.dart';
 import 'package:schoolevents/constant/const.dart';
+import 'package:schoolevents/sevices/auth_service.dart';
 
-class MyRegister extends StatefulWidget {
-  const MyRegister({super.key});
+class StudntRegistr extends StatefulWidget {
+  const StudntRegistr({super.key});
 
   @override
-  State<MyRegister> createState() => _MyRegisterState();
+  State<StudntRegistr> createState() => _MyRegisterState();
 }
 
-class _MyRegisterState extends State<MyRegister> {
-  TextEditingController _name = TextEditingController();
-  TextEditingController _phonenum = TextEditingController();
-  TextEditingController _email = TextEditingController();
-  TextEditingController _idnum = TextEditingController();
-  TextEditingController _department = TextEditingController();
+class _MyRegisterState extends State<StudntRegistr> {
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _phonenum = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _idnum = TextEditingController();
+  final TextEditingController _department = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _phonenum.dispose();
+    _email.dispose();
+    _password.dispose();
+    _idnum.dispose();
+    _department.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Registration',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 440.0),
-            child: Text('Name'),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Name'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _name,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your name";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text('Phone Number'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _phonenum,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your phone number";
+                  } else if (value.length != 10) {
+                    return "Enter valid phone number";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text('Email'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _email,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your email";
+                  }
+                  if (!RegExp(
+                          r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')
+                      .hasMatch(value)) {
+                    return "Please enter a valid email address";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text('Password'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _password,
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter password";
+                  } else if (value.length < 6) {
+                    return "Enter at least 6 characters";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text('ID Number'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _idnum,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your ID Number";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text('Department'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _department,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your Department";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 32),
+              Center(
+                child: _isLoading
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: _handleRegistration,
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(bluecolor),
+                          padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(
+                              horizontal: 32,
+                              vertical: 12,
+                            ),
+                          ),
+                        ),
+                        child: const Text(
+                          'Submit',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+              ),
+            ],
           ),
-          TextFormField(
-            controller: _name,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "please enter your name";
-              } else if (value.length <= 5) {
-                return "enter more than 5 characters";
-              } else {
-                return null;
-              }
-            },
-            decoration: InputDecoration(
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 430.0),
-            child: Text('Phone No'),
-          ),
-          TextFormField(
-            controller: _phonenum,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "please enter your phone number";
-              } else if (value.length <= 5) {
-                return "enter atleast 10 digits";
-              } else {
-                return null;
-              }
-            },
-            decoration: InputDecoration(
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 470.0),
-            child: Text("Email"),
-          ),
-          TextFormField(
-            controller: _email,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "please enter your Email ID";
-              } else if (value.length <= 5) {
-                return "enter your valid id";
-              } else {
-                return null;
-              }
-            },
-            decoration: InputDecoration(
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 430.0),
-            child: Text('ID Number'),
-          ),
-          TextFormField(
-            controller: _idnum,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "please enter your ID Number";
-              } else if (value.length <= 3) {
-                return "enter your valid id";
-              } else {
-                return null;
-              }
-            },
-            decoration: InputDecoration(
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 430.0),
-            child: Text('Department'),
-          ),
-          TextFormField(
-            controller: _department,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "please enter your Department";
-              } else if (value.length <= 5) {
-                return "enter your correct department name";
-              } else {
-                return null;
-              }
-            },
-            decoration: InputDecoration(
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-          ),
-          SizedBox(
-            height: 80,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _submit();
-            },
-            style:
-                ButtonStyle(backgroundColor: WidgetStatePropertyAll(bluecolor)),
-            child: Text(
-              'submit',
-              style: TextStyle(color: Colors.white),
-            ),
-          )
-        ],
+        ),
       ),
     );
   }
 
-  void _submit() {
+  Future<void> _handleRegistration() async {
     if (_formKey.currentState!.validate()) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => StudentHomeScreen()));
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        final result = await AuthServices().studentReg(
+          name: _name.text.trim(),
+          email: _email.text.trim(),
+          password: _password.text,
+          idnumber: _idnum.text.trim(),
+          department: _department.text.trim(),
+          phoneno: _phonenum.text.trim(),
+        );
+
+        if (result != null) {
+          Get.off(() => StudentLogin());
+        } else {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Registration failed. Please try again."),
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        log('Registration error: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.toString().contains('firebase')
+                  ? "Registration failed. Please check your details and try again."
+                  : e.toString()),
+            ),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
     }
   }
 }

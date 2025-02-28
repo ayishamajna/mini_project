@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:schoolevents/View/admin/AdminEvent.dart';
+import 'package:schoolevents/View/admin/addEvent.dart';
 
 class AdminEvent extends StatefulWidget {
   const AdminEvent({super.key});
@@ -26,7 +26,6 @@ class _AdminEventState extends State<AdminEvent> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                fontFamily: 'Poppins-BoldItalic.ttf',
               ),
             ),
           ),

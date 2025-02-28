@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:schoolevents/View/Organizer/organizer_login.dart';
 import 'package:schoolevents/View/admin/AdminLogin.dart';
 import 'package:schoolevents/View/student/stdlogin.dart';
@@ -57,7 +56,7 @@ class _UserChoiceState extends State<UserChoice> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
               onPressed: () {
-                Get.to(LoginPage());
+                Get.to(StudentLogin());
               },
               child: Text(
                 "Student",

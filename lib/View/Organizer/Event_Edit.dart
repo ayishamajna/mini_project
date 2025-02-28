@@ -117,12 +117,11 @@ class _EventEditState extends State<EventEdit> {
 
                   CustomButton(
                     text: "Submit",
-                    onPressed: () {
+                    onpressed: () {
                       if (_formKey.currentState!.validate()) {
                         Get.to(OrganizerBnb());
                       }
                     },
-                    onpressed: () {},
                   ),
                 ],
               ),

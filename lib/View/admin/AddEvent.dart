@@ -97,7 +97,7 @@ class _AddEventState extends State<AddEvent> {
                   ),
                   SizedBox(height: screenHeight * 0.26),
                   CustomButton(
-                    onPressed: () {
+                    onpressed: () {
                       if (_formKey.currentState!.validate()) {
                         Get.to(AdminEvent());
                         Navigator.push(
@@ -109,7 +109,6 @@ class _AddEventState extends State<AddEvent> {
                       }
                     },
                     text: 'Submit',
-                    onpressed: () {},
                   ),
                 ],
               ),

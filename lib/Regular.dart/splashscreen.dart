@@ -12,7 +12,7 @@ class _MySplashState extends State<MySplash> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 4), () async {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => UserChoice()),

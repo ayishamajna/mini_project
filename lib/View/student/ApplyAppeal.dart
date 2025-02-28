@@ -132,7 +132,6 @@ class AppealApply extends StatelessWidget {
                 SizedBox(height: size.height * 0.02),
                 CustomButton(
                   text: "Submit",
-                  onPressed: () {},
                   onpressed: () {},
                 )
               ]))),
